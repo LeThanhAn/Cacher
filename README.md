@@ -1,5 +1,5 @@
 # AN's CACHING LIBRARY
-#### WHY CACHE?
+### WHY CACHE?
 We need cache because calls to DB can be computationally expensive. In addition, cache helps with user experience, as commonly requested information can be loaded quickly.
 
 Distributed Cache vs Global Cache
@@ -22,6 +22,51 @@ For the programming assignment, LRU was implemented as it is the most popular po
 Currently in the code, there is no fault tolerance being applied. However, given more time, I would do frequent snapshots of the cache, in the event that a server utilizing the cache goes down in order to prevent the data from being lost.
 ____________________________________________
 
-### Setting up
-
 ### How to use
+With the cacherProject-0.0.1-SNAPSHOT.jar file sent separately, run the following command
+
+`
+java -jar cacherProject-0.0.1-SNAPSHOT.jar
+`
+
+The program will run in a command-line interface. These are the following instructions you can do
+
+
+- set key value
+- get key
+
+____________________________________________
+### Implementation Strategy
+This Cache can currently hold a list of 10 items
+
+This cache project was implemented with an FRU Cache Policy. This was done using a combination of a Hashtable and a Doubly Linked List. The Doubly Linked List is implemented using a Node class in `an.cacherProject.model` package.
+
+On a high level, the Hashtable contains the key of the value that the user try to set, and a Node object of the Node containing that value in the Doubly Linked List.
+
+Whenever the user evokes a `get key` instruction, the cache will get the Node holding the value using the Hashtable. It will then return the user with the value stored in the Node, as well as move the Node on top of the Doubly Linked List.
+
+This strategy allows the cache to keep track of the most frequently visited Node, as any interaction with the Node will bring it to the top of the Doubly Linked List.
+
+When the user evokes a `set key value` instruction, the cache will check if the key exists. 
+
+If it exists, the cache updates the value of the key and puts the corresponding Node to the start of the Doubly Linked List
+
+If the key does not exist, it will check whether the cache limit had been exceeded. 
+
+If it did not exceed, the cache will add a Node containing the value at the top of the Doubly Linked List as well as adding a key, Node pair in the Hashtable.
+
+If the cache limit exceed, the cache will then remove the node at the end of the Doubly Linked List, and add the new Node to the start of the Doubly Linked List as well as a key, Node reference in the Hashtable
+
+### Why Hashtable and Doubly Linked List?
+For our cache to work most efficiently, we need
+1. A way to keep track of which item had been accessed most recently
+2. O(1) insertion
+3. O(1) deletion
+4. O(1) retrieval
+
+With the condition of O(1) retrieval, HashMap and Hashtable come to mind. However, using them alone will not help us keep track of how recent the item was accessed.
+
+Thus, in order to keep track with the item's recency, LinkedList come to mind. However, Singly Linked List has a deletion of O(N), as it does not keep the information of the node before it.
+
+Thus, I chose to implement the strategy with a Doubly Linked List.
+

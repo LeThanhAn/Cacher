@@ -64,9 +64,9 @@ For our cache to work most efficiently, we need
 3. O(1) deletion
 4. O(1) retrieval
 
-With the condition of O(1) retrieval, HashMap and Hashtable come to mind. However, using them alone will not help us keep track of how recent the item was accessed.
+With the condition of O(1) retrieval, HashMap and Hashtable come to mind. I chose Hashtable as HashMap is not thread-safe. In an ideal situation where this library is used in an application, it has to be thread-safe in order to be used. 
 
-Thus, in order to keep track with the item's recency, LinkedList come to mind. However, Singly Linked List has a deletion of O(N), as it does not keep the information of the node before it.
+Using Hashtable alone will not help us keep track of how recent the item was accessed. Thus, in order to keep track with the item's recency, LinkedList come to mind. However, Singly Linked List has a deletion of O(N), as it does not keep the information of the node before it.
 
-Thus, I chose to implement the strategy with a Doubly Linked List.
+Thus, I chose to implement the strategy with a Hashtable and a Doubly Linked List.
 

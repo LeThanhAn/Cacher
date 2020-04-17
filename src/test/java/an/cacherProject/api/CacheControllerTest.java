@@ -10,19 +10,7 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CacheControllerTest {
-
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-
-
-    @BeforeTestClass
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-    }
-
     @Test
     void processInstruction() {
-        System.out.print("dog");
-        assertEquals("dog", outContent.toString());
     }
 }
